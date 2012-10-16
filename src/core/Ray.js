@@ -92,6 +92,36 @@
 
 			intersects.push( intersect );
 
+		} else if ( object instanceof THREE.Sprite ) {
+
+			distance = distanceFromIntersection( ray.origin, ray.direction, object.matrixWorld.getPosition() );
+
+			var hitRadius;
+
+			if (object.scale.x == object.scale.y && object.map.image.width == object.map.image.height ) {
+
+				hitRadius = object.scale.x * object.map.image.width / 2;
+
+			} else {
+
+				hitRadius = Math.max(object.scale.x * object.map.image.width / 2, object.scale.y * object.map.image.height / 2);
+			}
+
+			if ( distance > hitRadius ) {
+				return [];
+			}
+
+			intersect = {
+
+				distance: distance,
+				point: object.position,
+				face: null,
+				object: object
+
+			};
+
+			intersects.push( intersect );
+
 		} else if ( object instanceof THREE.Mesh ) {
 
 			// Checking boundingSphere
