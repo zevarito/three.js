@@ -2,7 +2,7 @@
  * @author Eberhard Graether / http://egraether.com/
  */
 
-THREE.TrackballControls = function ( object, domElement ) {
+THREE.TrackballControls = function ( object, domElement, constraintToAxis ) {
 
 	THREE.EventTarget.call( this );
 
@@ -34,6 +34,8 @@ THREE.TrackballControls = function ( object, domElement ) {
 	this.maxDistance = Infinity;
 
 	this.keys = [ 65 /*A*/, 83 /*S*/, 68 /*D*/ ];
+
+	this.constraintAxis = constraintToAxis;
 
 	// internals
 
@@ -93,6 +95,15 @@ THREE.TrackballControls = function ( object, domElement ) {
 	};
 
 	this.getMouseProjectionOnBall = function ( clientX, clientY ) {
+
+		if ( this.constraintAxis === "X" ) {
+
+			clientY = this.domElement.height / 2;
+
+		} else if ( this.constraintAxis === "Y" ) {
+
+			clientX = this.domElement.width / 2;
+		}
 
 		var mouseOnBall = new THREE.Vector3(
 			( clientX - _this.screen.width * 0.5 - _this.screen.offsetLeft ) / _this.radius,
